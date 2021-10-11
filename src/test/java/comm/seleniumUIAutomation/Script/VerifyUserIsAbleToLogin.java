@@ -12,6 +12,7 @@ public class VerifyUserIsAbleToLogin extends TestBase {
 
 	@Test
 	public void loginToApplication() {
+		//Login Into Application
 		login();
 
 	}

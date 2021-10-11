@@ -1,14 +1,17 @@
 package com.seleniumUIAutommation.Helper;
 
 import java.awt.Robot;
+import java.time.Duration;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
-
+import java.util.function.Function;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class TestBaseHelper {
@@ -18,6 +21,7 @@ public class TestBaseHelper {
 	public WebDriver driver;
 	Actions action;
 	Robot robot;
+	FluentWait<WebElement> fluentWait;
 	public final int Implicitly_Wait = 10;
 	JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -36,12 +40,42 @@ public class TestBaseHelper {
 		this.driver=driver;
 	}
 
-
+/*
+ * @Desc :This method implicitly waits for element for given time
+ * 
+ */
 	public void implicityWaitUntil(int timeUnitInSecond) {
 		driver.manage().timeouts().implicitlyWait(timeUnitInSecond,TimeUnit.SECONDS);
 	}
 	
-
+	/*
+	 * @Desc :Wait for Element to visible In DOM
+	 * 
+	 */
+	public void waitForElementToVisible(WebElement element) {
+		wait = new WebDriverWait(this.driver, Implicitly_Wait);
+		wait.until(ExpectedConditions.visibilityOf(element));
+	}
+	
+	/*
+	 *@Desc : Wait until Element Is Clickable 
+	 */
+	public  void waitUntilElementClickable(WebElement element) {
+		wait = new WebDriverWait (this.driver, Implicitly_Wait);
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+	}
+	
+	/*
+	 * @Desc : Fluent Wait
+	 */
+     public void  waitForElementToBePresent(WebElement element) {
+    	 fluentWait = new FluentWait(this.driver);
+    	 fluentWait.withTimeout(Duration.ofSeconds(Implicitly_Wait)).
+    	 pollingEvery(Duration.ofSeconds(Implicitly_Wait)).ignoring(NoSuchElementException.class);
+    	 
+     }
+	
+	
 	// Handle locator type
 	public static By byLocator(final String locator) {
 		By result = null;
@@ -67,7 +101,7 @@ public class TestBaseHelper {
 	}
 
 	public void mouseClickOnElement(final String element) {
-
+		
 	}
 
 	/*
